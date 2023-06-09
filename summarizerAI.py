@@ -1,4 +1,5 @@
-# Video tutorial: https://www.youtube.com/@Avra_b/videos
+# Video tutorial: https://www.youtube.com/watch?v=cVBUOQAlrOw
+# Medium tutorial: https://medium.com/@avra42/summarizing-scientific-articles-with-openai-and-streamlit-fdee12aa1a2b
 
 #!pip install -r requirements.txt
 
@@ -24,19 +25,18 @@ elif output_size == "Concise":
 else:
     out_token = 516
 
-if len(article_text) > 100:
-    if st.button("Generate Summary", type="primary"):
-        # Use GPT to generate a summary of the article
+if len(article_text)>100:
+    if st.button("Generate Summary",type='primary'):
+    # Use GPT-3 to generate a summary of the article
         response = openai.Completion.create(
-            engine = "text-davinci-002",
-            prompt = "Please summarize this scientific article for me in a few seconds : " + article_text,
+            engine="text-davinci-002",
+            prompt="Please summarize this scientific article for me in a few sentences: " + article_text,
             max_tokens = out_token,
-            temperature = 0.5
+            temperature = 0.5,
         )
-
-        # Print the summary
+        # Print the generated summary
         res = response["choices"][0]["text"]
-        st.info(res)
-        st.download_button("Download Result", res)
+        st.success(res)
+        st.download_button('Download result', res)
 else:
-    st.warning("The sentence is not long enough!")
+    st.warning("Not enough words to summarize!")
