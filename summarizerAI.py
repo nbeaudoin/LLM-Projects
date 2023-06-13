@@ -2,24 +2,23 @@
 # Medium tutorial: https://medium.com/@avra42/summarizing-scientific-articles-with-openai-and-streamlit-fdee12aa1a2b
 
 #!pip install -r requirements.txt
-
+# Import the required libraries
 import openai
+# import os
 import streamlit as st
 
-openai.api_key = st.secrets['pass']
+# Set the GPT-3 API key
+openai.api_key = st.secrets["pass"]
 
-# Setup up Streamlit UI
-st.header("Summarizer App using OpenAI + Streamlit")
+# Read the text of the article from a file
+# with open("article.txt", "r") as f:
+#     article_text = f.read()
+article_text = st.text_area("Enter your scientific texts to summarize")
+output_size = st.radio(label = "What kind of output do you want?", 
+                    options= ["To-The-Point", "Concise", "Detailed"])
 
-# Layout box 
-article_text = st.text_area("Enter your text you want to summarize")
-output_size = st.radio(label="What kind of output do you want?",
-                       options=["To-the-point",
-                                "Concise",
-                                "Detailed"])
-
-if output_size == "To-the-point":
-    out_token = 50,
+if output_size == "To-The-Point":
+    out_token = 50
 elif output_size == "Concise":
     out_token = 128
 else:
@@ -32,7 +31,7 @@ if len(article_text)>100:
             engine="text-davinci-002",
             prompt="Please summarize this scientific article for me in a few sentences: " + article_text,
             max_tokens = out_token,
-            temperature = 0.5,
+            temperature = 0.5
         )
         # Print the generated summary
         res = response["choices"][0]["text"]
